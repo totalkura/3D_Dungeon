@@ -133,11 +133,10 @@ public class PlayerController : MonoBehaviour
             //Debug.DrawRay(rays[i].origin, rays[i].direction * 0.2f, Color.green, 10f, false);
             if (Physics.Raycast(rays[i],0.2f,groundLayerMask))
             {
-                Debug.Log("Grounded: " + i);
                 return true;
             }
         }
-        
+        CharacterManager.Instance.Player.isJump = false;
         return false;
     }
 
