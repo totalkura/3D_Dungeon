@@ -6,9 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     [Header("MoverMent")]
     public float moveSpeed;
+    public float runSpeed;
     public float jumpPower;
     public float jumpStamina;
-    private Vector2 curMovementInput;
+    public float runStamina;
+    public bool isRun;
+    private Vector2 curMovementInput;    
     public LayerMask groundLayerMask;
     
     [Header("Look")]
@@ -26,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        isRun = false;
     }
 
     void Start()
@@ -48,12 +52,35 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
+
+        if (!isRun)
+            dir *= moveSpeed;
+        else
+        {
+            dir *= runSpeed;
+            CharacterManager.Instance.Player.condition.UseStamina(runStamina * Time.deltaTime);
+        }
+
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
     }
+
+    public void Run(InputAction.CallbackContext context)
+    {
+        //Debug.Log("Run: " + isRun);
+        if (context.phase == InputActionPhase.Performed)
+        {
+            isRun = true;
+        }
+        else
+        {
+            isRun = false;
+        }
+    }
+
 
     void CameraLook()
     {

@@ -11,19 +11,18 @@ public class PlayerCondition : MonoBehaviour, IDamageable
     public UICondition uiCondition;
 
     Condition health { get { return uiCondition.health; } }
-    Condition eats { get { return uiCondition.eats; } }
     Condition stamina { get { return uiCondition.stamina; } }
 
     public float noHungerHealthDecay;
 
     public event Action onTakeDamage;
 
+    public GameObject effectDie;
 
     void Update()
     {
         stamina.Add(stamina.passiveValue * Time.deltaTime);
-        Debug.Log(CharacterManager.Instance.Player.transform.position.y);
-        Debug.Log(CharacterManager.Instance.Player.resetPosition);
+
         if (health.curValue == 0f || CharacterManager.Instance.Player.transform.position.y < -10f)
         {
             Die();
@@ -36,14 +35,14 @@ public class PlayerCondition : MonoBehaviour, IDamageable
         health.Add(amount);
     }
 
-    public void Eat(float amount)
-    {
-        eats.Add(amount);
-    }
 
     public void Die()
     {
+        effectDie.SetActive(true);
+        stamina.Add(stamina.maxValue);
+        health.Add(health.maxValue);
         CharacterManager.Instance.Player.transform.position = CharacterManager.Instance.Player.resetPosition;
+        Invoke("EffactDieFalse", 2f);
     }
 
     public void TakePhysicalDamage(int damage)
@@ -54,7 +53,6 @@ public class PlayerCondition : MonoBehaviour, IDamageable
 
     public bool UseStamina(float amount)
     {
-        Debug.Log($"{stamina.curValue - amount < 0f}");
         if (stamina.curValue - amount < 0f)
         {
             return false;
@@ -63,5 +61,10 @@ public class PlayerCondition : MonoBehaviour, IDamageable
         stamina.Subtract(amount);
 
         return true;
+    }
+
+    public void EffactDieFalse()
+    {
+        effectDie.SetActive(false);
     }
 }
