@@ -7,9 +7,10 @@ public class PlayerController : MonoBehaviour
     [Header("MoverMent")]
     public float moveSpeed;
     public float jumpPower;
+    public float jumpStamina;
     private Vector2 curMovementInput;
     public LayerMask groundLayerMask;
-
+    
     [Header("Look")]
     public Transform cameraContainer;
     public float minXLook;
@@ -82,10 +83,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        IsGrounded();
-        if (context.phase == InputActionPhase.Started && IsGrounded())
+
+        if (context.phase == InputActionPhase.Started && IsGrounded() && CharacterManager.Instance.Player.condition.UseStamina(jumpStamina))
         {
-            _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);    
         }
     }
 
@@ -102,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
         for(int i = 0; i < rays.Length; i++)
         {
-            Debug.DrawRay(rays[i].origin, rays[i].direction * 0.2f, Color.green, 10f, false);
+            //Debug.DrawRay(rays[i].origin, rays[i].direction * 0.2f, Color.green, 10f, false);
             if (Physics.Raycast(rays[i],0.2f,groundLayerMask))
             {
                 Debug.Log("Grounded: " + i);
