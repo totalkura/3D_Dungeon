@@ -35,10 +35,14 @@ public class PlayerCondition : MonoBehaviour, IDamageable
             stamina.Add(stamina.passiveValue * Time.deltaTime);
         }
 
+        if (CharacterManager.Instance.Player.transform.position.y > 35f)
+            health.Subtract(20 * Time.deltaTime);
+
         if (health.curValue == 0f || CharacterManager.Instance.Player.transform.position.y < -10f)
         {
             Die();
         }
+        
 
     }
 
