@@ -59,8 +59,9 @@ public class PlayerController : MonoBehaviour
             dir *= moveSpeed;
         else
         {
-            dir *= runSpeed;
-            CharacterManager.Instance.Player.condition.UseStamina(runStamina * Time.deltaTime);
+            if (CharacterManager.Instance.Player.condition.UseStamina(runStamina * Time.deltaTime))
+                dir *= runSpeed;
+            else isRun = false;
         }
 
         dir.y = _rigidbody.velocity.y;
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Run: " + isRun);
         if (context.phase == InputActionPhase.Performed)
         {
+            if (CharacterManager.Instance.Player.condition.UseStamina(20))
             isRun = true;
         }
         else

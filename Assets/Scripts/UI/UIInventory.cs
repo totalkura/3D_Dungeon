@@ -22,7 +22,6 @@ public class UIInventory : MonoBehaviour
 
     int selectedItemIndex = 0;
 
-    int curEquipIndex;
 
     void Start()
     {

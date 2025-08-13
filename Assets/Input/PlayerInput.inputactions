@@ -164,7 +164,7 @@
                     "name": "",
                     "id": "f6b8b183-14c2-4c16-af01-4fd965149eb7",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "Press(pressPoint=0.2,behavior=2)",
+                    "interactions": "Press(pressPoint=0.2)",
                     "processors": "",
                     "groups": "",
                     "action": "Run",
