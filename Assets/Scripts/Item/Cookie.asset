@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "\uCFE0\uD0A4"
   description: "\uB9DB\uC788\uB294 \uCFE0\uD0A4\uC785\uB2C8\uB2E4"
   type: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a6a057e6956f3aa428982c3bdb3c83b0, type: 3}
   dropPrefab: {fileID: 7968877002816994076, guid: 4cbccfc00914bc247870520d737e6a5f, type: 3}
   canStack: 1
   maxStackAmount: 3

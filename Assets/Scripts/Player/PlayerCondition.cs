@@ -35,6 +35,11 @@ public class PlayerCondition : MonoBehaviour, IDamageable
         health.Add(amount);
     }
 
+    public void Eat(float amount)
+    {
+        stamina.Add(amount);
+    }
+
 
     public void Die()
     {
