@@ -86,6 +86,8 @@ public class PlayerCondition : MonoBehaviour, IDamageable
         return true;
     }
 
+
+
     public void EffactDieFalse()
     {
         effectDie.SetActive(false);

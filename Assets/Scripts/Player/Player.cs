@@ -12,7 +12,10 @@ public class Player : MonoBehaviour
     public Rigidbody _rigidbody;
     public Vector3 resetPosition;
 
+    private Transform currentMove;
+
     public bool isJump;
+
     private void Awake()
     {
         CharacterManager.Instance.Player = this;
@@ -28,13 +31,28 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Jump"))
         {
-            Debug.Log("Jumped on Jump Object!");
             isJump = true;
             Vector3 jumpForce = new Vector3(0, 200f, 0);
-            Debug.Log("Applying jump force: " + jumpForce);
             _rigidbody.AddForce(jumpForce, ForceMode.Impulse);
 
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            currentMove = collision.transform;
+            transform.SetParent(currentMove);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform == currentMove)
+        {
+            transform.SetParent(null);
+            currentMove = null;
+        }
+    }
 }
