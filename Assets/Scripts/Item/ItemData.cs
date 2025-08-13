@@ -3,16 +3,15 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Equipable,
     Consumable,
-    Resource,
     Empthy
 }
 
 public enum  ConsumableTypes
 {
     Health,
-    Stamina
+    Stamina,
+    Long
 }
 
 [Serializable]
@@ -20,6 +19,7 @@ public class  ItemDataConsumable
 {
     public ConsumableTypes type;
     public float value;
+    public float time;
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
@@ -31,7 +31,6 @@ public class ItemData : ScriptableObject
     public string description;
     public ItemType type;
     public Sprite icon;
-    public GameObject dropPrefab;
 
     [Header("Staking")]
     public bool canStack;
@@ -40,7 +39,4 @@ public class ItemData : ScriptableObject
     [Header("Consumable")]
     public ItemDataConsumable[] consumables;
 
-    [Header("Equip")]
-    public bool equip;
-    public GameObject equipPrefab;
 }

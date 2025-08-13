@@ -14,13 +14,12 @@ public class UIInventory : MonoBehaviour
     public TextMeshProUGUI selectedStatName;
     public TextMeshProUGUI selectedStatValue;
     public GameObject useButton;
-    public GameObject equipButton;
-    public GameObject unequipButton;
 
     private PlayerController controller;
     private PlayerCondition condition;
 
     private ItemData selectedItem;
+
     int selectedItemIndex = 0;
 
     int curEquipIndex;
@@ -55,8 +54,6 @@ public class UIInventory : MonoBehaviour
         selectedStatValue.text = string.Empty;
 
         useButton.SetActive(false);
-        equipButton.SetActive(false);
-        unequipButton.SetActive(false);
     }
 
     public void Toggle()
@@ -160,14 +157,19 @@ public class UIInventory : MonoBehaviour
 
         for (int i = 0; i < selectedItem.consumables.Length; i++)
         {
-            selectedStatName.text += selectedItem.consumables[i].type.ToString() + "\n";
-            selectedStatValue.text += selectedItem.consumables[i].value.ToString() + "\n";
+            if (selectedItem.consumables[i].time == 10)
+            {
+                selectedStatName.text += "스테미나 회복이 10초간 \n5 증가합니다\n";
+            }
+            else
+            {
+                selectedStatName.text += selectedItem.consumables[i].type.ToString() + "\n";
+                selectedStatValue.text += selectedItem.consumables[i].value.ToString() + "\n";
+            }
 
         }
 
         useButton.SetActive(selectedItem.type == ItemType.Consumable);
-        equipButton.SetActive(selectedItem.type == ItemType.Equipable && !slots[index].equipped);
-        unequipButton.SetActive(selectedItem.type == ItemType.Equipable && slots[index].equipped);
     }
 
     public void OnUseButton()
@@ -184,6 +186,9 @@ public class UIInventory : MonoBehaviour
                         break;
                     case ConsumableTypes.Stamina:
                         condition.Eat(selectedItem.consumables[i].value);
+                        break;
+                    case ConsumableTypes.Long:
+                        condition.TimeAdd(selectedItem.consumables[i].time, selectedItem.consumables[i].value);
                         break;
                 }
             }
@@ -206,35 +211,4 @@ public class UIInventory : MonoBehaviour
         UpdateUI();
     }
 
-    public void OnEquipButton()
-    {
-        if (slots[curEquipIndex].equipped)
-        {
-            UnEquip(curEquipIndex);
-        }
-
-        slots[selectedItemIndex].equipped = true;
-        curEquipIndex = selectedItemIndex;
-        CharacterManager.Instance.Player.equip.EquipNew(selectedItem);
-        UpdateUI();
-
-        SelectItem(selectedItemIndex);
-    }
-
-    private void UnEquip(int index)
-    {
-        slots[index].equipped = false;
-        CharacterManager.Instance.Player.equip.UnEquip();
-        UpdateUI();
-
-        if(selectedItemIndex == index)
-        {
-            SelectItem(selectedItemIndex);
-        }
-    }
-
-    public void OnUnEquipButton()
-    {
-        UnEquip(selectedItemIndex);
-    }
 }

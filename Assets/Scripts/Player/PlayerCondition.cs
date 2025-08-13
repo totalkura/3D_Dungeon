@@ -19,9 +19,21 @@ public class PlayerCondition : MonoBehaviour, IDamageable
 
     public GameObject effectDie;
 
+    public float timeSet;
+    public float staminaTimeSet;
+
     void Update()
     {
-        stamina.Add(stamina.passiveValue * Time.deltaTime);
+        if (timeSet >= 0f)
+        {
+            timeSet -= Time.deltaTime;
+            stamina.Add((stamina.passiveValue + staminaTimeSet) * Time.deltaTime);
+            Debug.Log(timeSet);
+        }
+        else
+        {
+            stamina.Add(stamina.passiveValue * Time.deltaTime);
+        }
 
         if (health.curValue == 0f || CharacterManager.Instance.Player.transform.position.y < -10f)
         {
@@ -38,6 +50,12 @@ public class PlayerCondition : MonoBehaviour, IDamageable
     public void Eat(float amount)
     {
         stamina.Add(amount);
+    }
+
+    public void TimeAdd(float time,float value)
+    {
+        timeSet = time;
+        staminaTimeSet = value;
     }
 
 
